@@ -20,6 +20,12 @@
 		"default_popup": "/ext.html"
 	},
 
+	"permissions": [
+		"tabs",
+		"http://*/",
+		"https://*/"
+	],
+
 	//"options_page": "html/options.html",
 	"homepage_url": "http://churn.tv"
 }
