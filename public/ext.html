@@ -10,7 +10,7 @@
 	-->
 
 	<div screen=""></div>
-	<div class="loader-outer" ng-if="root.loading">
+	<div class="loader-outer" ng-if="loadState.loading">
 		<div class="loader-inner">
 			<span class="icon-spin3 animate-spin loader-icon"></span>
 		</div>
@@ -24,6 +24,9 @@
 	<script src="app/channels/channels.js"></script>
 
 	<!-- Primary app files -->
+	<script src="app/chrome/chrome.js"></script>
+	<script src="app/loader/loader.js"></script>
+	<script src="app/error/error.js"></script>
 	<script src="app/api/api.js"></script>
 	<script src="app/screens/screens.js"></script>
 	<script src="main.js"></script>

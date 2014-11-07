@@ -13,8 +13,6 @@
  	.factory('API', ['$resource', 'globals', '$q', 
  	function($resource, globals, $q){
 
- 		var userToken;
-
  		// Auth related
  		var AuthAPI = $resource(globals.api + '/auth/:action', { action: '@action' }, {
  			newToken: { method: 'GET', params: { action: 'newtoken' }},
@@ -62,49 +60,60 @@
  			User: UserAPI,
  			Auth: AuthAPI,
  			Channel: ChannelAPI,
- 			Categories: CategoriesAPI,
- 			loadToken: function() {
- 				var deferred = $q.defer();
-
- 				if(!chrome || !chrome.tabs){
- 					deferred.resolve();
- 				}else{
- 					chrome.tabs.create({
- 					    active: false,
- 					    url: 'http://churn.tv/robots.txt'
- 					}, function(tab) {
- 					    chrome.tabs.executeScript(tab.id, {
- 					        code: 'localStorage.getItem("ngStorage-token");'
- 					    }, function(token) {
- 					        chrome.tabs.remove(tab.id);
- 					         				        
- 					        if(token && token.length > 0){
- 					        	var t = token[0];
- 					        	userToken = t.substr(1, t.length-2);
- 					        	
- 					        	deferred.resolve();
- 					        }else{
- 					        	deferred.reject();
- 					        }
- 					    });
- 					});
- 				}
-
- 				return deferred.promise;
- 			},
- 			getToken: function() { return userToken; }
+ 			Categories: CategoriesAPI
  		};
  	}])
+	.factory('Token', ['$q',
+	function($q){
+
+		var userToken;
+
+		function loadToken() {
+			var deferred = $q.defer();
+
+			if(!chrome || !chrome.tabs){
+				// development (allow with no token)
+				deferred.resolve();
+			}else{
+				chrome.tabs.create({
+				    active: false,
+				    url: 'http://churn.tv/robots.txt'
+				}, function(tab) {
+				    chrome.tabs.executeScript(tab.id, {
+				        code: 'localStorage.getItem("ngStorage-token");'
+				    }, function(token) {
+				        chrome.tabs.remove(tab.id);
+				         				        
+				        if(token && token.length > 0){
+				        	var t = token[0];
+				        	userToken = t.substr(1, t.length-2);
+				        	
+				        	deferred.resolve();
+				        }else{
+				        	deferred.reject();
+				        }
+				    });
+				});
+			}
+
+			return deferred.promise;
+		}
+
+		return {
+			loadToken: loadToken,
+			getToken: function() { return userToken; }
+		};
+	}])
  	// interceptor to use token system with api
- 	.factory('TokenAuthInterceptor', ['$q', 'globals', 
- 	function($q, globals){
+ 	.factory('TokenAuthInterceptor', ['$q', 'globals', 'Token',
+ 	function($q, globals, Token){
  		return {
  			
  			request: function(config){				
  				config.headers = config.headers || {};
  				// only alter api specific churn calls
  				if(config.url.indexOf(globals.api) === 0){
- 					var token = API.getToken();
+ 					var token = Token.getToken();
  					config.headers.Authorization = 'Bearer ' + token;
  				}
  				return config;
