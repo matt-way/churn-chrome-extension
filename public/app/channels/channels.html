@@ -5,19 +5,25 @@
 		</div>
 		<div class="hl"></div>
 		<div class="list-wrapper">
-			<div ng-repeat="item in items">
+			<div ng-repeat="item in channels" ng-click="saveTo(item.channelId)">
 				<div class="list-item">
-					<img class="list-item-thumb" src="http://i1.ytimg.com/vi/Px7Uc2GrnhE/mqdefault.jpg"/>
+					<img class="list-item-thumb" ng-src="http://i1.ytimg.com/vi/{{item.defaultVideoThumb}}/mqdefault.jpg"/>
 					<div class="list-item-details">
 						<div class="list-item-title">
-							Channel title
+							{{item.name}}
 						</div>
 						<div class="list-item-metrics">
-							650 shares - 1,059 views
+							{{item.totalShares | textNumber}} shares - {{item.totalViews | textNumber}} views
 						</div>
 					</div>
 				</div>
 				<div class="hl"></div>
+			</div>
+			<div class="list-item">
+				<img class="list-item-thumb" src="http://i.imgur.com/jMosBJD.jpg"/>
+				<div class="list-item-details">
+					<div class="list-item-title">Start a new channel</div>
+				</div>
 			</div>
 		</div>
 	</div>

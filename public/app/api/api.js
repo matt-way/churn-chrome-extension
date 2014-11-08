@@ -72,7 +72,8 @@
 			var deferred = $q.defer();
 
 			if(!chrome || !chrome.tabs){
-				// development (allow with no token)
+				// development (allow with static token)
+				userToken = 'dev token here';
 				deferred.resolve();
 			}else{
 				chrome.tabs.create({

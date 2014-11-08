@@ -7,9 +7,15 @@ angular.module('churn.ext.error', [])
 	.factory('Error', [
 	function(){
 
-		var state = {};
+		var state = {
+			visible: false,
+		};
 
 		return {
-			getState: function() { return state; }
-		}
+			getState: function() { return state; },
+			load: function(text) {
+				state.text = text;
+				state.visible = true;
+			}
+		};
 	}]);

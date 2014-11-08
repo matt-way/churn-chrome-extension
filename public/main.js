@@ -8,6 +8,7 @@ angular.module('churn-chrome-ext', ['churn.ext.screens',
 									'churn.ext.loader',
 									'churn.ext.error',
 									'churn.ext.chrome',
+									'churn.ext.filters',
 									'churn.ext.api'])
 	.constant('globals', {
 		api: 'http://api.churn.tv'
@@ -18,12 +19,13 @@ angular.module('churn-chrome-ext', ['churn.ext.screens',
 		$screensProvider
 			.screen('login', 'app/login/login.html')
 			.screen('channels', 'app/channels/channels.html')
-			.screen('saved', 'app/saved/saved.html')
-			.screen('error', 'app/error/error.html');
+			.screen('newchannel', 'app/channels/new.html')
+			.screen('saved', 'app/saved/saved.html');
 	}])
-	.controller('MainCtrl', ['$scope', '$screens', 'Token', 'Loader', 'Chrome',
-	function($scope, $screens, Token, Loader, Chrome){
+	.controller('MainCtrl', ['$scope', '$screens', 'Token', 'Loader', 'Chrome', 'Error',
+	function($scope, $screens, Token, Loader, Chrome, Error){
 
+		$scope.errorState = Error.getState();
 		$scope.loadState = Loader.getState();
 		Loader.toggle(true);
 
@@ -32,7 +34,7 @@ angular.module('churn-chrome-ext', ['churn.ext.screens',
 			Chrome.getVideoId().then(function(id){
 				$screens.load('channels');
 			}, function(err){
-				// TODO: handle no video on page found
+				Error.load('No videos found on the current page.');
 			});
 		}, function(err){
 			Loader.toggle(false);

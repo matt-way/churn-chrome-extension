@@ -10,6 +10,13 @@
 	-->
 
 	<div screen=""></div>
+	<div class="notice-outer" ng-if="errorState.visible">
+		<div class="notice-inner">
+			<span class="icon-error notice-icon"></span>
+			<div class="notice-text">Error!</div>
+			<div class="error-text">{{errorState.text}}</div>
+		</div>
+	</div>
 	<div class="loader-outer" ng-if="loadState.loading">
 		<div class="loader-inner">
 			<span class="icon-spin3 animate-spin loader-icon"></span>
@@ -24,6 +31,7 @@
 	<script src="app/channels/channels.js"></script>
 
 	<!-- Primary app files -->
+	<script src="app/filters/filters.js"></script>
 	<script src="app/chrome/chrome.js"></script>
 	<script src="app/loader/loader.js"></script>
 	<script src="app/error/error.js"></script>
