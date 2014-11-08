@@ -31,7 +31,7 @@ angular.module('churn-chrome-ext', ['churn.ext.screens',
 
 		// check that the api has a valid token
 		Token.loadToken().then(function(){
-			Chrome.getVideoId().then(function(id){
+			Chrome.loadVideo().then(function(video){
 				$screens.load('channels');
 			}, function(err){
 				Error.load('No videos found on the current page.');

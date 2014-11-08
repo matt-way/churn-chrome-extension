@@ -77,20 +77,22 @@ function($q){
 			    active: false,
 			    url: 'http://churn.tv/robots.txt'
 			}, function(tab) {
-			    chrome.tabs.executeScript(tab.id, {
-			        code: 'localStorage.getItem("ngStorage-token");'
-			    }, function(token) {
-			        chrome.tabs.remove(tab.id);
-			         				        
-			        if(token && token.length > 0){
-			        	var t = token[0];
-			        	userToken = t.substr(1, t.length-2);
-			        	
-			        	deferred.resolve();
-			        }else{
-			        	deferred.reject();
-			        }
-			    });
+				
+				chrome.tabs.executeScript(tab.id, {
+				    code: 'localStorage.getItem("ngStorage-token");'
+				}, function(token) {
+
+				    chrome.tabs.remove(tab.id);
+				     				        
+				    if(token && token.length > 0 && token[0] && token[0].length > 0){
+				    	var t = token[0];
+				    	userToken = t.substr(1, t.length-2);
+				    	
+				    	deferred.resolve();
+				    }else{
+				    	deferred.reject();
+				    }
+				});					    
 			});
 		}
 

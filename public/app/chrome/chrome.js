@@ -5,13 +5,24 @@
  */
 
 angular.module('churn.ext.chrome', [])
-	.factory('Chrome', ['$q',
-	function($q){
+	.factory('Chrome', ['$q', '$http',
+	function($q, $http){
 
-		var id = null;
+		var video = null;
 		var reg = /(?:http|https|)(?::\/\/|)(?:www.|)(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/ytscreeningroom\?v=|\/feeds\/api\/videos\/|\/user\S*[^\w\-\s]))([\w\-]{11})[a-z0-9;:@?&%=+\/\$_.-]*/;
 		
-		function getVideoId() {
+		function getVideoDetails(id, def) {
+			// get gdata for particular youtube video
+			$http.get('http://gdata.youtube.com/feeds/api/videos/' + id + '?v=2&alt=json').then(function(result){
+				video = {
+					id: id,
+					title: result.data.entry.title.$t
+				};
+				def.resolve(video);
+			});			
+		}
+
+		function loadVideo() {
 			var deferred = $q.defer();
 
 			// attempt to get a video id from the page
@@ -19,8 +30,7 @@ angular.module('churn.ext.chrome', [])
 				chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
 					var m = reg.exec(tabs[0].url);
 					if(m){
-						id = m[1];
-						deferred.resolve(id);				
+						getVideoDetails(m[1], deferred);
 					}else{
 						// check the page content
 						chrome.tabs.executeScript({ 
@@ -28,8 +38,7 @@ angular.module('churn.ext.chrome', [])
 						}, function(html) {							
 							m = reg.exec(html);
 							if(m){
-								id = m[1];
-								deferred.resolve(id);
+								getVideoDetails(m[1], deferred);								
 							}else{
 								deferred.reject();
 							}
@@ -37,17 +46,15 @@ angular.module('churn.ext.chrome', [])
 					}
 				});	
 			}else{	
-				id = 'test';
-				deferred.resolve(id);
+				video = { id: '1234567' };
+				deferred.resolve(video);
 			}
 
 			return deferred.promise;
 		}
 
 		return {
-			getVideoId: function() { 
-				if(id) { return $q.when(id); }
-				return getVideoId();
-			}
+			loadVideo: loadVideo,
+			getVideo: function() { return video; } 
 		};
 	}])

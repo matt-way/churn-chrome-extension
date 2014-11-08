@@ -7,6 +7,8 @@ angular.module('churn.ext.channels', [])
 	.controller('Channels', ['$scope', '$screens', 'API', 'Loader', 'Chrome', 'Error',
 	function($scope, $screens, API, Loader, Chrome, Error){
 
+		$scope.video = Chrome.getVideo();
+
 		// attempt to load the users channels
 		API.User.editable().$promise.then(function(result){
 			$scope.channels = result.data;
@@ -20,19 +22,18 @@ angular.module('churn.ext.channels', [])
 
 		$scope.saveTo = function(id) {
 			Loader.toggle(true);
-			Chrome.getVideoId().then(function(videoId){
-				// attempt to add the video to the channel
-				var url = 'https://www.youtube.com/watch?v=' + videoId;
-				// for now create the youtube url to provide to the api
-				return API.Channel.addVideo({ channelId: id, url: url }).$promise.then(function(result){
-					// successfully added
-					$screens.load('saved');
-					Loader.toggle(false);					
-				}, function(err){
-					// go to error screen
-					// TODO:
-					Loader.toggle(false);
-				});
+			
+			// attempt to add the video to the channel
+			var url = 'https://www.youtube.com/watch?v=' + $scope.video.id;
+			// for now create the youtube url to provide to the api
+			return API.Channel.addVideo({ channelId: id, url: url }).$promise.then(function(result){
+				// successfully added
+				$screens.load('saved');
+				Loader.toggle(false);					
+			}, function(err){
+				// go to error screen
+				Error.load('Could not save video to channel.');
+				Loader.toggle(false);
 			});
 		};
 
