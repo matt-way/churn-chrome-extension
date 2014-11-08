@@ -8,6 +8,7 @@ body{
 	font-family: 'Open Sans', sans-serif;
 	color: @churngrey;
 	width: 300px;
+	min-height: 300px;
 }
 
 //wrapper
@@ -24,6 +25,26 @@ body{
 //list
 .list-title{
 	font-size: 24px;
+	font-weight: 300;
+}
+.list-title-video{
+	margin-top: 8px;
+}
+.list-title-thumb{
+	width: 46px;
+	height: 26px;
+}
+.list-title-video-name{
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 5px;
+	width: 245px;
+	height: 26px;
+	font-size: 16px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 26px;
 	font-weight: 300;
 }
 .list-wrapper{
@@ -61,16 +82,19 @@ body{
 	top: 0;
 	left: 0;
 	display: table;
-	width: 300px;
+	//width: 300px;
+	width: 100%;
 	height: 300px;
 	background-color: #fff;
 }
 .loader-inner{
+	width: 100%;
 	display: table-cell;
 	vertical-align: middle;
 	text-align: center;
 }
 .loader-icon{
+	display: inline-block;
 	font-size: 40px;
 }
 
