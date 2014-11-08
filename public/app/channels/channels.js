@@ -38,4 +38,8 @@ angular.module('churn.ext.channels', [])
 		$scope.newChannel = function() {
 			$screens.load('newchannel');
 		};
+	}])
+	.controller('NewChannel', ['$scope',
+	function($scope){
+		
 	}]);
