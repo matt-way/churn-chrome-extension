@@ -4,8 +4,8 @@
  **/
 
 angular.module('churn.ext.channels', [])
-	.controller('Channels', ['$scope', '$screens', 'API', 'Loader', 'Chrome',
-	function($scope, $screens, API, Loader, Chrome){
+	.controller('Channels', ['$scope', '$screens', 'API', 'Loader', 'Chrome', 'Error',
+	function($scope, $screens, API, Loader, Chrome, Error){
 
 		// attempt to load the users channels
 		API.User.editable().$promise.then(function(result){
@@ -14,7 +14,8 @@ angular.module('churn.ext.channels', [])
 			Loader.toggle(false);
 		}, function(err){
 			// channels could not be loaded, so go to error screen
-			// TODO:
+			Error.load('Invalid token found. Please sign back in at churn.tv');
+			Loader.toggle(false);
 		});
 
 		$scope.saveTo = function(id) {

@@ -70,7 +70,7 @@ function($q){
 
 		if(!chrome || !chrome.tabs){
 			// development (allow with static token)
-			userToken = 'test';
+			userToken = '';
 			deferred.resolve();
 		}else{
 			chrome.tabs.create({

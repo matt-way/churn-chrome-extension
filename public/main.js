@@ -35,6 +35,7 @@ angular.module('churn-chrome-ext', ['churn.ext.screens',
 				$screens.load('channels');
 			}, function(err){
 				Error.load('No videos found on the current page.');
+				Loader.toggle(false);
 			});
 		}, function(err){
 			Loader.toggle(false);
