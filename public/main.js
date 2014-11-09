@@ -6,6 +6,7 @@
 angular.module('churn-chrome-ext', ['churn.ext.screens',
 									'churn.ext.channels',
 									'churn.ext.loader',
+									'churn.ext.saved',
 									'churn.ext.error',
 									'churn.ext.chrome',
 									'churn.ext.filters',

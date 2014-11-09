@@ -27,6 +27,9 @@ angular.module('churn.ext.channels', [])
 			var url = 'https://www.youtube.com/watch?v=' + $scope.video.id;
 			// for now create the youtube url to provide to the api
 			return API.Channel.addVideo({ channelId: id, url: url }).$promise.then(function(result){
+				// store information for sharing on final window
+				$scope.video.channelId = id;
+				$scope.video.pointerId = result.data.video.pointerId;
 				// successfully added
 				$screens.load('saved');
 				Loader.toggle(false);					
@@ -41,7 +44,41 @@ angular.module('churn.ext.channels', [])
 			$screens.load('newchannel');
 		};
 	}])
-	.controller('NewChannel', ['$scope',
-	function($scope){
+	.controller('NewChannel', ['$scope', 'API', 'Chrome', 'Loader', '$screens',
+	function($scope, API, Chrome, Loader, $screens){
+
+		$scope.createError = false;
+		$scope.video = Chrome.getVideo();
 		
+		$scope.createChannel = function() {
+			$scope.createError = false;
+			// make sure a name has been given
+			if(!$scope.channelName){
+				$scope.createError = true;
+			}else{
+				
+				// attempt to create the channel
+				Loader.toggle(true);
+				
+				// build the data payload for the new channel
+				var payload = {
+					channel: {
+						name: $scope.channelName,
+						videos: [{
+							youtubeId: $scope.video.id
+						}]
+					}
+				};
+
+				API.Channel.create(payload).$promise.then(function(result){
+					// store the channel Id so the final screen can setup sharing
+					$scope.video.channelId = result.data;
+					$screens.load('saved');
+					Loader.toggle(false);
+				}, function(err){
+					Error.load('Could not create channel and save video.');
+					Loader.toggle(false);
+				});
+			}
+		};
 	}]);

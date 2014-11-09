@@ -1,6 +1,17 @@
-<div class="notice-outer">
+<div class="notice-outer" ng-controller="Saved">
 	<div class="notice-inner">
 		<span class="icon-ok notice-icon"></span>
 		<div class="notice-text">Video saved!</div>
+		<div class="share">
+			<div>{{shareText}}</div>
+			<div class="share-buttons">
+				<div class="share-button share-facebook" ng-click="shareFacebook()">
+					<i class="icon-facebook share-facebook-icon"></i>Share on Facebook
+				</div>
+				<div class="share-button share-twitter" ng-click="shareTwitter()">
+					<i class="icon-twitter-bird share-twitter-icon"></i>Share on Twitter
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
