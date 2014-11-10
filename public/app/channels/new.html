@@ -1,17 +1,17 @@
 <div class="new-channel" ng-controller="NewChannel">
 	<div class="title">
-		<div class="title-text">New channel</div>
+		<div class="list-title">New channel</div>
 	</div>
-	<div class="line"></div>
+	<div class="hl"></div>
 	<form ng-submit="createChannel()" novalidate>
 		<div class="new-channel-name">
 			<input type="text" class="new-channel-input" placeholder="Give your channel a name" ng-model="channelName"/>
 		</div>
 		<div class="error" ng-if="createError">Please enter a channel name.</div>
-		<div class="line"></div>
+		<div class="hl"></div>
 		<div class="buttons">
 			<!-- <button class="button cancel separator button-clean" ng-click="newChannel = false">Cancel</button> -->
-			<button class="button button-clean" type="submit">Ok</button>
+			<button class="button button-save" type="submit">Save</button>
 		</div>
 	</form>
 </div>
