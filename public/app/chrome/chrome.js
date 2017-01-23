@@ -11,15 +11,18 @@ angular.module('churn.ext.chrome', [])
 		var video = null;
 		var reg = /(?:http|https|)(?::\/\/|)(?:www.|)(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/ytscreeningroom\?v=|\/feeds\/api\/videos\/|\/user\S*[^\w\-\s]))([\w\-]{11})[a-z0-9;:@?&%=+\/\$_.-]*/;
 		
+		// public youytube key. this should really be moved away from the codebase
+		var ytClientKey = 'AIzaSyA_xTA7ee0HjKAr60paAGbmBUcTFqd-g_A';
+
 		function getVideoDetails(id, def) {
-			// get gdata for particular youtube video
-			$http.get('http://gdata.youtube.com/feeds/api/videos/' + id + '?v=2&alt=json').then(function(result){
+			$http.get('https://www.googleapis.com/youtube/v3/videos?id=' + id + '&part=snippet&key=' + ytClientKey).then(function(result){
+				console.log(result.data);
 				video = {
 					id: id,
-					title: result.data.entry.title.$t
+					title: result.data.items[0].snippet.title
 				};
 				def.resolve(video);
-			});			
+			});
 		}
 
 		function loadVideo() {
